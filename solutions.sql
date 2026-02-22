@@ -1,4 +1,3 @@
--- Q1: Schema Creation with Constraints
 CREATE TABLE Gender (
     Gender_ID NUMBER PRIMARY KEY,
     Name VARCHAR2(10) NOT NULL,
@@ -20,7 +19,7 @@ CREATE TABLE MyEmployee (
     LAST_NAME VARCHAR2(50) NOT NULL,
     FIRST_NAME VARCHAR2(50) NOT NULL,
     HIRE_DATE DATE NOT NULL,
-    JOB_TITLE VARCHAR2(50), -- Added as per Q3 requirement
+    JOB_TITLE VARCHAR2(50), -
     USERID NUMBER,
     SALARY NUMBER(10, 2),
     DEPT_ID NUMBER,
@@ -33,7 +32,6 @@ CREATE TABLE MyEmployee (
     CONSTRAINT fk_university FOREIGN KEY (University_ID) REFERENCES University(ID)
 );
 
--- Q2: Data Retrieval Query with Unique Aliases
 SELECT 
     e.FIRST_NAME || ' ' || e.LAST_NAME AS "Employee Name",
     e.SALARY AS "Salary",
@@ -47,7 +45,6 @@ LEFT JOIN MyEmployee m ON e.USERID = m.ID_Number
 LEFT JOIN Gender g ON e.Gender_ID = g.Gender_ID
 LEFT JOIN University u ON e.University_ID = u.ID;
 
--- Q3: Monthly Salary by Job Title
 SELECT 
     JOB_TITLE, 
     SUM(SALARY) AS TOTAL_MONTHLY_SALARY
@@ -56,21 +53,12 @@ WHERE JOB_TITLE != 'Sales'
 GROUP BY JOB_TITLE
 HAVING SUM(SALARY) > 2500;
 
--- Q4: Coding Errors Identification
--- Statement: SELECT empno, ename, salary x 12 ANNUAL SALARY; FROM emp;
--- Errors:
--- 1. Operator Error: 'x' is used instead of '*' for multiplication.
--- 2. Syntax Error: The semicolon ';' is placed incorrectly before the 'FROM' clause.
--- 3. Alias Formatting: Missing 'AS' or proper comma placement for the alias 'ANNUAL SALARY'.
--- 4. Schema Check: 'ANNUAL SALARY' with a space requires double quotes or should be 'ANNUAL_SALARY'.
 
--- Q5: Oracle Function F_HR_QUERY (Updated to find SCOTT internally)
 CREATE OR REPLACE FUNCTION F_HR_QUERY 
 RETURN SYS_REFCURSOR IS
     rc SYS_REFCURSOR;
     v_scott_hire_date DATE;
 BEGIN
-    -- Get SCOTT's hire date internally
     SELECT HIRE_DATE INTO v_scott_hire_date 
     FROM MyEmployee 
     WHERE FIRST_NAME = 'SCOTT' AND ROWNUM = 1;
@@ -87,11 +75,9 @@ EXCEPTION
 END;
 /
 
--- Q6: Oracle Procedure P_COPY_EMPLOYEE (Ensuring table exists)
 CREATE OR REPLACE PROCEDURE P_COPY_EMPLOYEE AS
     v_count NUMBER;
 BEGIN
-    -- Check if update table exists, if not create it
     SELECT count(*) INTO v_count FROM user_tables WHERE table_name = 'MYEMPLOYEE_UPDATE';
     
     IF v_count = 0 THEN
